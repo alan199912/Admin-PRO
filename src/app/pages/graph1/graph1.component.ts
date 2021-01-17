@@ -8,6 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class Graph1Component implements OnInit {
 
+  public labels1: string[] = ['Bread', 'Soda', 'Taco']
+
+  public data1 = [
+    [10, 15, 40],
+  ];
+
   constructor() { }
 
   ngOnInit(): void {
