@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivationEnd, Router } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
+import { filter, map } from 'rxjs/operators'
 
 @Component({
   selector: 'app-breadcrumbs',
@@ -6,11 +9,34 @@ import { Component, OnInit } from '@angular/core';
   styles: [
   ]
 })
-export class BreadcrumbsComponent implements OnInit {
+export class BreadcrumbsComponent implements OnInit, OnDestroy {
 
-  constructor() { }
+  public title: string;
+  public titleSubscription$: Subscription;
+
+  constructor(private router: Router) {
+    this.titleSubscription$ = this.getParams()
+                                .subscribe( ({title}) => {
+                                  this.title = title;
+                                  document.title = `Admin PRO - ${title}`;
+                                });
+  }
 
   ngOnInit(): void {
+  }
+
+  getParams() {
+    return this.router.events
+      .pipe(
+        filter( event => event instanceof ActivationEnd  ),
+        filter( (event: ActivationEnd) => event.snapshot.firstChild === null ),
+        map( (event: ActivationEnd) => event.snapshot.data ),
+      )
+
+  }
+
+  ngOnDestroy() {
+    this.titleSubscription$.unsubscribe();
   }
 
 }
