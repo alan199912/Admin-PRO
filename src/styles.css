@@ -13,3 +13,8 @@
 .pointer {
   cursor: pointer;
 }
+
+.img-account {
+  width: 200px;
+  height: 200px;
+}

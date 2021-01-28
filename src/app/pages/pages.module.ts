@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
 import { ComponentsModule } from '../components/components.module';
 
 
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProgressComponent } from './progress/progress.component';
@@ -17,6 +17,7 @@ import { PagesComponent } from './pages.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { PromisesComponent } from './promises/promises.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
+import { AccountComponent } from './account/account.component';
 
 
 
@@ -28,7 +29,8 @@ import { RxjsComponent } from './rxjs/rxjs.component';
     PagesComponent,
     AccountSettingsComponent,
     PromisesComponent,
-    RxjsComponent
+    RxjsComponent,
+    AccountComponent
   ],
   exports: [
     DashboardComponent,
@@ -42,6 +44,7 @@ import { RxjsComponent } from './rxjs/rxjs.component';
     SharedModule,
     RouterModule,
     FormsModule,
+    ReactiveFormsModule,
     ComponentsModule,
   ]
 })

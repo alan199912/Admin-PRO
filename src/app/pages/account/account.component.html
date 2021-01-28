@@ -1,0 +1,68 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">My Account</h4>
+        <h6 class="card-subtitle">Settings</h6>
+        <form class="form p-t-20"
+          [formGroup]="accountForm"
+          (ngSubmit)="updateAccount()">
+          <div class="form-group">
+            <label for="exampleInputuname">User Name</label>
+            <div class="input-group">
+              <div class="input-group-addon"><i class="ti-user"></i></div>
+              <input
+                type="text"
+                class="form-control"
+                id="exampleInputuname"
+                formControlName="name"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <div class="input-group">
+              <div class="input-group-addon"><i class="ti-email"></i></div>
+              <input
+                type="email"
+                class="form-control"
+                id="exampleInputEmail1"
+                formControlName="email"
+                [readOnly]="user.google === true"
+              />
+            </div>
+          </div>
+          <button
+            type="submit"
+            class="btn btn-success btn-block waves-effect waves-light m-r-10"
+            [disabled]="accountForm.invalid">
+            <i class="fa fa-save"></i>
+            Save
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Image</h4>
+        <h6 class="card-subtitle">Image user</h6>
+        <div class="d-flex justify-content-center border-rounded">
+          <img *ngIf="!imgTemp" [src]="user.getImg" alt="" class="img-account"/>
+          <img *ngIf="imgTemp" [src]="imgTemp" alt="" class="img-account"/>
+        </div>
+        <input type="file" class="my-3" (change)="changeFile($event.target.files[0])"/>
+        <button
+          type="button"
+          class="btn btn-success btn-block waves-effect waves-light m-r-10"
+          [disabled]="!img"
+          (click)="uploadImg()"
+        >
+          <i class="fa fa-save"></i>
+          Change img
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

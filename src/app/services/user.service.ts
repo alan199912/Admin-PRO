@@ -9,8 +9,7 @@ import { LoginForm } from '../interfaces/login-form.interface';
 import { Observable, of } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { promise } from 'protractor';
-import { rejects } from 'assert';
+import { User } from '../models/user.model';
 
 const base_url = environment.base_ulr;
 declare const gapi: any;
@@ -21,6 +20,7 @@ declare const gapi: any;
 export class UserService {
 
   public auth2: any;
+  public user: User;
 
   constructor(private http: HttpClient,
               private router: Router,
@@ -28,23 +28,35 @@ export class UserService {
                 this.googleInit()
               }
 
-    googleInit() {
+  // * token
+  get token(): string {
+    return localStorage.getItem('token') || '';
+  }
 
-      return new Promise<void>( resolve => {
-        gapi.load('auth2', () => {
-          // Retrieve the singleton for the GoogleAuth library and set up the client.
-          this.auth2 = gapi.auth2.init({
-            client_id:
-              '718356833614-mhn2cgu7o4vgilcord67kmha53n7s35m.apps.googleusercontent.com',
-            cookiepolicy: 'single_host_origin',
-            // Request scopes in addition to 'profile' and 'email'
-            //scope: 'additional_scope'
-          });
-          resolve();
+  // * uid user
+  get uid(): string {
+    return this.user.id || '';
+  }
+
+  // * register with google
+  googleInit() {
+
+    return new Promise<void>( resolve => {
+      gapi.load('auth2', () => {
+        // Retrieve the singleton for the GoogleAuth library and set up the client.
+        this.auth2 = gapi.auth2.init({
+          client_id:
+            '718356833614-mhn2cgu7o4vgilcord67kmha53n7s35m.apps.googleusercontent.com',
+          cookiepolicy: 'single_host_origin',
+          // Request scopes in addition to 'profile' and 'email'
+          //scope: 'additional_scope'
         });
+        resolve();
       });
-    }
+    });
+  }
 
+  // * close session
   logOut() {
     localStorage.removeItem('token');
 
@@ -55,24 +67,30 @@ export class UserService {
     });
   }
 
+  // * validate token
   validateToken(): Observable<boolean> {
-    const token = localStorage.getItem('token') || '';
-
     return this.http
       .get(`${base_url}/auth/renew`, {
         headers: {
-          'x-token': token,
+          'x-token': this.token,
         },
       })
       .pipe(
-        tap((res: any) => {
+        map((res: any) => {
+          console.log(res)
+          const { name, email, google, role, img, _id } = res.user;
+
+          this.user = new User(name, email, '', img, google, role, _id);
+
           localStorage.setItem('token', res.token);
+
+          return true;
         }),
-        map((res) => true),
-        catchError((error) => of(false)) // * return a new observable
+        catchError(() => of(false)) // * return a new observable
       );
   }
 
+  // * register user
   createUser(formData: RegisterForm): Observable<RegisterForm> {
     return this.http.post<RegisterForm>(`${base_url}/users`, formData).pipe(
       tap((res: any) => {
@@ -81,6 +99,22 @@ export class UserService {
     );
   }
 
+  // * update user
+  updateAccount(data: { email: string, name: string, role: string }) {
+
+    data = {
+      ...data,
+      role: this.user.role
+    }
+
+    return this.http.put(`${base_url}/users/${this.uid}`, data, {
+      headers: {
+        'x-token': this.token,
+      }
+    });
+  }
+
+  // * login user
   login(formData: RegisterForm): Observable<LoginForm> {
     return this.http.post<LoginForm>(`${base_url}/auth/login`, formData).pipe(
       tap((res: any) => {
@@ -89,7 +123,8 @@ export class UserService {
     );
   }
 
-  loginGoogle(token) {
+  // * login with google
+  loginGoogle(token: any) {
     return this.http.post(`${base_url}/auth/google`, { token }).pipe(
       tap((res: any) => {
         localStorage.setItem('token', res.token);
