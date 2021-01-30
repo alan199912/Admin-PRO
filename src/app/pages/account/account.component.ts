@@ -7,15 +7,12 @@ import { FileUploadService } from 'src/app/services/file-upload.service';
 import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
 
-
 @Component({
   selector: 'app-account',
   templateUrl: './account.component.html',
-  styles: [
-  ]
+  styles: [],
 })
 export class AccountComponent implements OnInit {
-
   public accountForm: FormGroup;
   public user: User;
   public img: File;
@@ -23,23 +20,28 @@ export class AccountComponent implements OnInit {
 
   public update: any;
 
-  constructor(private fb: FormBuilder,
-              private userService: UserService,
-              private fileUploadService: FileUploadService ) {
-
-  this.user = userService.user;
-}
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    private fileUploadService: FileUploadService
+  ) {
+    this.user = userService.user;
+  }
 
   ngOnInit(): void {
+    console.log(this.user);
 
-    console.log(this.user)
-
-    this.accountForm  = this.fb.group({
-      name: [this.user.name, {
-        validators: [Validators.required],
-        updateOn: 'change',
-      }],
-      email: [this.user.email, {
+    this.accountForm = this.fb.group({
+      name: [
+        this.user.name,
+        {
+          validators: [Validators.required],
+          updateOn: 'change',
+        },
+      ],
+      email: [
+        this.user.email,
+        {
           validators: [Validators.required, Validators.email],
           updateOn: 'change',
         },
@@ -47,42 +49,54 @@ export class AccountComponent implements OnInit {
     });
   }
 
-
   updateAccount() {
-    this.userService.updateAccount(this.accountForm.value).subscribe( () => {
-      const { name, email } = this.accountForm.value
-      this.user.name = name;
-      this.user.email = email;
-      Swal.fire('Save', 'Edited succesfully', 'success');
-    },(error) => {
-      Swal.fire('Error', error.error.msg, 'error');
-    })
+    this.userService.updateAccount(this.accountForm.value).subscribe(
+      () => {
+        const { name, email } = this.accountForm.value;
+        this.user.name = name;
+        this.user.email = email;
+        Swal.fire('Save', 'Edited succesfully', 'success');
+      },
+      (error) => {
+        Swal.fire('Error', error.error.msg, 'error');
+      }
+    );
   }
 
   changeFile(file: File) {
     this.img = file;
-
-    if(!file) {
-      return this.imgTemp = null
+    console.log(file)
+    if (!file) {
+      return (this.imgTemp = null);
     }
 
+    // * show img to would change
     const reader = new FileReader();
-    reader.readAsDataURL( file );
+    reader.readAsDataURL(file);
 
     reader.onloadend = () => {
-      this.imgTemp = reader.result
-    }
-
+      this.imgTemp = reader.result;
+    };
   }
 
   uploadImg() {
-    this.fileUploadService.updateFile(this.img, 'users', this.user.id).subscribe((res:any) => {
-      console.log(res)
-      this.user.img = res
-      Swal.fire('Save', 'Photo Edited succesfully', 'success');
-    }, (error) => {
-      Swal.fire('Error', error.error.msg, 'error');
-    });
+    this.fileUploadService
+      .updateFile(this.img, 'users', this.user.id)
+      .subscribe(
+        (res: any) => {
+          console.log(res);
+          this.user.img = res;
+          this.uploadUserComplete();
+          Swal.fire('Save', 'Photo Edited succesfully', 'success');
+        },
+        (error) => {
+          Swal.fire('Error', error.error.msg, 'error');
+        }
+      );
   }
 
+  uploadUserComplete() {
+    // * momentary
+    this.userService.updateUser(this.user).subscribe(res => console.log(res))
+  }
 }

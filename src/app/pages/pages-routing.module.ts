@@ -6,6 +6,7 @@ import { AccountComponent } from './account/account.component';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { Graph1Component } from './graph1/graph1.component';
+import { UsersComponent } from './maintenance/users/users.component';
 import { PagesComponent } from './pages.component';
 import { ProgressComponent } from './progress/progress.component';
 import { PromisesComponent } from './promises/promises.component';
@@ -24,7 +25,8 @@ const routes: Routes = [
       { path: 'account', component: AccountComponent, data: { title: 'Account' } },
       { path: 'promises', component: PromisesComponent, data: { title: 'Promises' } },
       { path: 'rxjs', component: RxjsComponent, data: { title: 'RXJS' } },
-    ]
+      { path: 'users', component: UsersComponent, data: { title: 'users' } },
+    ],
   },
 ];
 

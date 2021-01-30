@@ -1,4 +1,4 @@
-import { environment } from "src/environments/environment";
+import { environment } from 'src/environments/environment';
 
 const base_url = environment.base_ulr;
 export class User {
@@ -10,20 +10,17 @@ export class User {
     public google?: boolean,
     public role?: string,
     public id?: string
-    ) {}
+  ) {}
 
   get getImg(): string {
-
-
-    if( this.img ) {
+    if (!this.img) {
+      return `${base_url}/uploads/users/noimg`;
+    } else if (this.img.includes('https')) {
+      return this.img;
+    } else if (this.img) {
       return `${base_url}/uploads/users/${this.img}`;
+    } else {
+      return `${base_url}/uploads/users/noimg`;
     }
-
-    // // this.img.includes('https')
-    if( this.img !== undefined || this.img !== '' || this.img.includes('https')) {
-      return this.img
-    }
-
-    return `${base_url}/uploads/users/noimg`;
   }
 }

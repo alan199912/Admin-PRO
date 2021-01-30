@@ -10,6 +10,7 @@ import { Observable, of } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { User } from '../models/user.model';
+import { getUser } from '../interfaces/get-users.interface';
 
 const base_url = environment.base_ulr;
 declare const gapi: any;
@@ -18,15 +19,16 @@ declare const gapi: any;
   providedIn: 'root',
 })
 export class UserService {
-
   public auth2: any;
   public user: User;
 
-  constructor(private http: HttpClient,
-              private router: Router,
-              private ngZone: NgZone) {
-                this.googleInit()
-              }
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private ngZone: NgZone
+  ) {
+    this.googleInit();
+  }
 
   // * token
   get token(): string {
@@ -40,8 +42,7 @@ export class UserService {
 
   // * register with google
   googleInit() {
-
-    return new Promise<void>( resolve => {
+    return new Promise<void>((resolve) => {
       gapi.load('auth2', () => {
         // Retrieve the singleton for the GoogleAuth library and set up the client.
         this.auth2 = gapi.auth2.init({
@@ -60,10 +61,10 @@ export class UserService {
   logOut() {
     localStorage.removeItem('token');
 
-    this.auth2.signOut().then( () => {
-      this.ngZone.run( () => {
+    this.auth2.signOut().then(() => {
+      this.ngZone.run(() => {
         this.router.navigateByUrl('/login');
-      })
+      });
     });
   }
 
@@ -77,8 +78,7 @@ export class UserService {
       })
       .pipe(
         map((res: any) => {
-          console.log(res)
-          const { name, email, google, role, img, _id } = res.user;
+          const { name, email, google, role, img = '', _id } = res.user;
 
           this.user = new User(name, email, '', img, google, role, _id);
 
@@ -100,7 +100,7 @@ export class UserService {
   }
 
   // * update user
-  updateAccount(data: { email: string, name: string, role: string }) {
+  updateAccount(data: { email: string; name: string; role: string }) {
 
     data = {
       ...data,
@@ -110,7 +110,7 @@ export class UserService {
     return this.http.put(`${base_url}/users/${this.uid}`, data, {
       headers: {
         'x-token': this.token,
-      }
+      },
     });
   }
 
@@ -131,4 +131,51 @@ export class UserService {
       })
     );
   }
+
+  getUsers(pagination: number = 0) {
+    return this.http
+      .get<getUser>(`${base_url}/users?pagination=${pagination}`, {
+        headers: {
+          'x-token': this.token,
+        },
+      })
+      .pipe(
+        map((res: any) => {
+          const users = res.users.map(
+            (elem: any) =>
+              new User(
+                elem.name,
+                elem.email,
+                '',
+                elem.img,
+                elem.google,
+                elem.role,
+                elem._id
+              )
+          );
+
+          return {
+            totalRecord: res.totalRecord,
+            users,
+          };
+        })
+      );
+  }
+
+  deleteUser(user: User) {
+    return this.http.delete(`${base_url}/users/${user.id}`, {
+      headers: {
+        'x-token': this.token,
+      },
+    });
+  }
+
+  updateUser(user: User) {
+    return this.http.put(`${base_url}/users/${user.id}`, user, {
+      headers: {
+        'x-token': this.token,
+      },
+    });
+  }
+
 }

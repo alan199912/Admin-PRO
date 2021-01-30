@@ -18,6 +18,7 @@ import { AccountSettingsComponent } from './account-settings/account-settings.co
 import { PromisesComponent } from './promises/promises.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
 import { AccountComponent } from './account/account.component';
+import { UsersComponent } from './maintenance/users/users.component';
 
 
 
@@ -30,7 +31,8 @@ import { AccountComponent } from './account/account.component';
     AccountSettingsComponent,
     PromisesComponent,
     RxjsComponent,
-    AccountComponent
+    AccountComponent,
+    UsersComponent
   ],
   exports: [
     DashboardComponent,

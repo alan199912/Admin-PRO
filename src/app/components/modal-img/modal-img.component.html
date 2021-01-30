@@ -1,0 +1,58 @@
+<div
+  class="background-modal-img animated fadeIn fast"
+  [class.hide]="modalImgService.hideModal"
+>
+  <div
+    class="modal fade show"
+    id="exampleModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel1"
+    style="display: block"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel1">Load Image</h4>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            (click)="closeModal()"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body text-center">
+          <h3>Select a image</h3>
+          <div class="d-flex justify-content-center border-rounded">
+            <img
+              *ngIf="!imgTemp"
+              [src]="modalImgService.img"
+              alt=""
+              class="img-account"
+            />
+            <img *ngIf="imgTemp" [src]="imgTemp" alt="" class="img-account" />
+          </div>
+          <input
+            type="file"
+            class="my-3"
+            (change)="changeFile($event.target.files[0])"
+          />
+        </div>
+        <div class="modal-footer d-flex justify-content-between">
+          <button
+            (click)="closeModal()"
+            type="button"
+            class="btn btn-default"
+            data-dismiss="modal"
+          >
+            Close
+          </button>
+          <button (click)="uploadImg()" type="button" class="btn btn-primary">Save Image</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

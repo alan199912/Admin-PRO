@@ -17,4 +17,33 @@
 .img-account {
   width: 200px;
   height: 200px;
+  object-fit: fill;
+}
+
+.w100 {
+  width: 100px;
+}
+
+.w150 {
+  width: 150px;
+}
+
+.img-user {
+  width: 75px;
+  border-radius: 100%;
+  object-fit: fill;
+}
+
+.background-modal-img {
+  background-color: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 99999;
+}
+
+.hide {
+  display: none;
 }
