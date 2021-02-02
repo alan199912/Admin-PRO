@@ -40,6 +40,15 @@ export class UserService {
     return this.user.id || '';
   }
 
+  get role(): 'ADMIN_ROLE' | 'USER_ROLE' {
+    return this.user.role;
+  }
+
+  saveLocalStorage(token: string, menu: any) {
+    localStorage.setItem('token', token);
+    localStorage.setItem('menu', JSON.stringify(menu));
+  }
+
   // * register with google
   googleInit() {
     return new Promise<void>((resolve) => {
@@ -60,6 +69,7 @@ export class UserService {
   // * close session
   logOut() {
     localStorage.removeItem('token');
+    localStorage.removeItem('menu');
 
     this.auth2.signOut().then(() => {
       this.ngZone.run(() => {
@@ -82,7 +92,7 @@ export class UserService {
 
           this.user = new User(name, email, '', img, google, role, _id);
 
-          localStorage.setItem('token', res.token);
+          this.saveLocalStorage(res.token, res.menu);
 
           return true;
         }),
@@ -92,20 +102,17 @@ export class UserService {
 
   // * register user
   createUser(formData: RegisterForm): Observable<RegisterForm> {
-    return this.http.post<RegisterForm>(`${base_url}/users`, formData).pipe(
-      tap((res: any) => {
-        localStorage.setItem('token', res.token);
-      })
-    );
+    return this.http
+      .post<RegisterForm>(`${base_url}/users`, formData)
+      .pipe(tap((res: any) => this.saveLocalStorage(res.token, res.menu)));
   }
 
   // * update user
   updateAccount(data: { email: string; name: string; role: string }) {
-
     data = {
       ...data,
-      role: this.user.role
-    }
+      role: this.user.role,
+    };
 
     return this.http.put(`${base_url}/users/${this.uid}`, data, {
       headers: {
@@ -116,20 +123,16 @@ export class UserService {
 
   // * login user
   login(formData: RegisterForm): Observable<LoginForm> {
-    return this.http.post<LoginForm>(`${base_url}/auth/login`, formData).pipe(
-      tap((res: any) => {
-        localStorage.setItem('token', res.token);
-      })
-    );
+    return this.http
+      .post<LoginForm>(`${base_url}/auth/login`, formData)
+      .pipe(tap((res: any) => this.saveLocalStorage(res.token, res.menu)));
   }
 
   // * login with google
   loginGoogle(token: any) {
-    return this.http.post(`${base_url}/auth/google`, { token }).pipe(
-      tap((res: any) => {
-        localStorage.setItem('token', res.token);
-      })
-    );
+    return this.http
+      .post(`${base_url}/auth/google`, { token })
+      .pipe(tap((res: any) => this.saveLocalStorage(res.token, res.menu)));
   }
 
   getUsers(pagination: number = 0) {
@@ -171,7 +174,7 @@ export class UserService {
       })
       .pipe(
         map((res: any) => {
-          console.log(res.user)
+          console.log(res.user);
           const user = new User(
             res.user.name,
             res.user.email,
@@ -180,8 +183,8 @@ export class UserService {
             res.user.google,
             res.user.role,
             res.user._id
-          )
-          return user
+          );
+          return user;
         })
       );
   }
@@ -201,5 +204,4 @@ export class UserService {
       },
     });
   }
-
 }

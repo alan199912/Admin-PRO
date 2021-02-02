@@ -6,27 +6,24 @@ import { UserService } from 'src/app/services/user.service';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styles: [
-  ]
+  styles: [],
 })
 export class SidebarComponent implements OnInit {
-
   public menuItems: any[];
   public user: User;
 
-  constructor(private sidebarService: SidebarService,
-        private userService: UserService) {
-
-    this.menuItems = this.sidebarService.menu;
+  constructor(
+    public sidebarService: SidebarService,
+    private userService: UserService
+  ) {
+    // this.menuItems = this.sidebarService.menu;
 
     this.user = userService.user;
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   logOut() {
-    this.userService.logOut()
+    this.userService.logOut();
   }
-
 }

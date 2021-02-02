@@ -22,7 +22,7 @@ export class DoctorComponent implements OnInit {
   public hospitals: Array<Hospital>;
   public hospitalSelected: Hospital;
   public doctorSelected: Doctor;
-  public id: string = this.activatedRoute.snapshot.params.id;
+  public id: string;
 
   constructor(
     private fb: FormBuilder,
@@ -33,6 +33,10 @@ export class DoctorComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.activatedRoute.params.subscribe((params) => {
+      this.id = params.id;
+    });
+
     this.getDoctorID(this.id);
 
     this.doctorForm = this.fb.group({

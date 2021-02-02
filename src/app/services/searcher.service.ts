@@ -19,6 +19,15 @@ export class SearcherService {
     return localStorage.getItem('token') || '';
   }
 
+  // * headers
+  get headers() {
+    return {
+      headers: {
+        'x-token': this.token,
+      },
+    };
+  }
+
   private usersTransform(data: Array<User>): Array<User> {
     return data.map(
       (u) => new User(u.name, u.email, '', u.img, u.google, u.role, u.id)
@@ -36,11 +45,7 @@ export class SearcherService {
     return this.http
       .get<Array<User> | Array<Hospital> | Array<Doctor>>(
         `${base_url}/searches/collection/${type}/${searchTerm}`,
-        {
-          headers: {
-            'x-token': this.token,
-          },
-        }
+        this.headers
       )
       .pipe(
         map((res: any) => {
@@ -57,5 +62,12 @@ export class SearcherService {
           }
         })
       );
+  }
+
+  searchAll(searchTerm: string) {
+    return this.http.get<Array<User> | Array<Hospital> | Array<Doctor>>(
+      `${base_url}/searches/${searchTerm}`,
+      this.headers
+    );
   }
 }

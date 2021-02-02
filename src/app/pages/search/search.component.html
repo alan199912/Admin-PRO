@@ -1,0 +1,106 @@
+<div class="row animated fadeIn fast">
+  <div class="col-4">
+    <div class="card">
+      <div class="card-body">
+        <h3>Users</h3>
+        <div class="alert alert-info" role="alert" *ngIf="users.length === 0">
+          <p class="mb-0">There are no Users</p>
+        </div>
+        <div class="table-responsive" *ngIf="users.length > 0">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of users">
+                <td>
+                  <img
+                    [src]="user.img | img: 'users'"
+                    [alt]="user.name"
+                    class="w100"
+                  />
+                </td>
+                <td>{{ user.name }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="card">
+      <div class="card-body">
+        <h3>Hospitals</h3>
+        <div
+          class="alert alert-info"
+          role="alert"
+          *ngIf="hospitals.length === 0 || hospitals.length === undefined"
+        >
+          <p class="mb-0">There are no Hospitals</p>
+        </div>
+        <div class="table-responsive" *ngIf="hospitals.length > 0">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let hospital of hospitals">
+                <td>
+                  <img
+                    [src]="hospital.img | img: 'hospitals'"
+                    [alt]="hospital.name"
+                    class="w100"
+                  />
+                </td>
+                <td>{{ hospital.name }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="card">
+      <div class="card-body">
+        <h3>Doctors</h3>
+        <div
+          class="alert alert-info"
+          role="alert"
+          *ngIf="doctors.length === 0 || doctors.length === undefined"
+        >
+          <p class="mb-0">There are no Doctor</p>
+        </div>
+        <div class="table-responsive" *ngIf="doctors.length > 0">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let doctor of doctors" (click)="openDoctor(doctor)">
+                <td>
+                  <img
+                    [src]="doctor.img | img: 'doctors'"
+                    [alt]="doctor.name"
+                    class="w100"
+                  />
+                </td>
+                <td>{{ doctor.name }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AdminGuard } from '../guards/admin.guard';
 import { AuthGuard } from '../guards/auth.guard';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { AccountComponent } from './account/account.component';
@@ -14,6 +15,7 @@ import { PagesComponent } from './pages.component';
 import { ProgressComponent } from './progress/progress.component';
 import { PromisesComponent } from './promises/promises.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
+import { SearchComponent } from './search/search.component';
 
 const routes: Routes = [
   {
@@ -46,6 +48,7 @@ const routes: Routes = [
       { path: 'rxjs', component: RxjsComponent, data: { title: 'RXJS' } },
       {
         path: 'users',
+        canActivate: [AdminGuard],
         component: UsersComponent,
         data: { title: 'Users Maintenance' },
       },
@@ -63,6 +66,11 @@ const routes: Routes = [
         path: 'doctor/:id',
         component: DoctorComponent,
         data: { title: 'Doctor Maintenance' },
+      },
+      {
+        path: 'search/:term',
+        component: SearchComponent,
+        data: { title: 'Searches' },
       },
     ],
   },
