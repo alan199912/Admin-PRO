@@ -1,14 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-
 //// import { PagesRoutingModule } from './pages-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { ComponentsModule } from '../components/components.module';
 
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PipesModule } from '../pipes/pipes.module';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProgressComponent } from './progress/progress.component';
@@ -19,8 +18,9 @@ import { PromisesComponent } from './promises/promises.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
 import { AccountComponent } from './account/account.component';
 import { UsersComponent } from './maintenance/users/users.component';
-
-
+import { HospitalsComponent } from './maintenance/hospitals/hospitals.component';
+import { DoctorsComponent } from './maintenance/doctors/doctors.component';
+import { DoctorComponent } from './maintenance/doctors/doctor/doctor.component';
 
 @NgModule({
   declarations: [
@@ -32,14 +32,17 @@ import { UsersComponent } from './maintenance/users/users.component';
     PromisesComponent,
     RxjsComponent,
     AccountComponent,
-    UsersComponent
+    UsersComponent,
+    HospitalsComponent,
+    DoctorsComponent,
+    DoctorComponent,
   ],
   exports: [
     DashboardComponent,
     ProgressComponent,
     Graph1Component,
     PagesComponent,
-    AccountSettingsComponent
+    AccountSettingsComponent,
   ],
   imports: [
     CommonModule,
@@ -48,6 +51,7 @@ import { UsersComponent } from './maintenance/users/users.component';
     FormsModule,
     ReactiveFormsModule,
     ComponentsModule,
-  ]
+    PipesModule,
+  ],
 })
-export class PagesModule { }
+export class PagesModule {}

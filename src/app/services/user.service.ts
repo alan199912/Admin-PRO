@@ -162,6 +162,30 @@ export class UserService {
       );
   }
 
+  getUserId(id: string) {
+    return this.http
+      .get<User>(`${base_url}/users/${id}`, {
+        headers: {
+          'x-token': this.token,
+        },
+      })
+      .pipe(
+        map((res: any) => {
+          console.log(res.user)
+          const user = new User(
+            res.user.name,
+            res.user.email,
+            '',
+            res.user.img,
+            res.user.google,
+            res.user.role,
+            res.user._id
+          )
+          return user
+        })
+      );
+  }
+
   deleteUser(user: User) {
     return this.http.delete(`${base_url}/users/${user.id}`, {
       headers: {

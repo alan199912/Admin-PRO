@@ -65,7 +65,7 @@ export class AccountComponent implements OnInit {
 
   changeFile(file: File) {
     this.img = file;
-    console.log(file)
+    console.log(file);
     if (!file) {
       return (this.imgTemp = null);
     }
@@ -97,6 +97,6 @@ export class AccountComponent implements OnInit {
 
   uploadUserComplete() {
     // * momentary
-    this.userService.updateUser(this.user).subscribe(res => console.log(res))
+    this.userService.updateUser(this.user).subscribe((res) => console.log(res));
   }
 }

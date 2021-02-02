@@ -2,7 +2,7 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <input type="text" class="form-control" placeholder="Search user..." />
+        <input type="text" class="form-control" placeholder="Search hospital..." />
       </div>
     </div>
   </div>
@@ -21,28 +21,22 @@
     <div class="card">
       <div class="card-body">
         <div class="card-body">
-          <h4 class="card-title">Users</h4>
-          <h6 class="card-subtitle">Users registered</h6>
+          <h4 class="card-title">Hospitals</h4>
+          <h6 class="card-subtitle">Hospitals registered</h6>
           <div class="table-responsive">
             <table class="table table-bordered">
               <thead>
                 <tr>
-                  <th>Task</th>
+                  <th>Photo</th>
+                  <th>Name</th>
+                  <th class="text-nowrap">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>Lunar probe project</td>
-                  <td>
-                    <div class="progress progress-xs margin-vertical-10">
-                      <div
-                        class="progress-bar bg-danger"
-                        style="width: 35%; height: 6px"
-                      ></div>
-                    </div>
-                  </td>
-                  <td>May 15, 2015</td>
-                  <td class="text-nowrap">
+                  <td>Lunar probe project</td>
+                  <td class="text-nowrap text-center">
                     <a
                       href="#"
                       data-toggle="tooltip"

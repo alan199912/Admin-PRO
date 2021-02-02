@@ -5,14 +5,12 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { imgAccount } from '../interfaces/img-account.interface';
 
-
 const base_url = environment.base_ulr;
 
 @Injectable({
   providedIn: 'root',
 })
 export class FileUploadService {
-
   constructor(private http: HttpClient) {}
 
   // * token
@@ -20,25 +18,21 @@ export class FileUploadService {
     return localStorage.getItem('token') || '';
   }
 
-  updateFile(
-    file: File,
-    type: 'users' | 'doctors' | 'hospitales',
-    id: string
-  ) {
-
+  updateFile(file: File, type: 'users' | 'doctors' | 'hospitals', id: string) {
     const formData = new FormData();
     formData.append('img', file);
 
-    return this.http.put<imgAccount>(`${base_url}/uploads/${type}/${id}`, formData, {
-      headers: {
-        'x-token': this.token,
-      },
-    })
-    .pipe(
-      map((res: any) => {
-        console.log(res)
-        return res.file
-      }),
-    );
+    return this.http
+      .put<imgAccount>(`${base_url}/uploads/${type}/${id}`, formData, {
+        headers: {
+          'x-token': this.token,
+        },
+      })
+      .pipe(
+        map((res: any) => {
+          console.log(res);
+          return res.file;
+        })
+      );
   }
 }

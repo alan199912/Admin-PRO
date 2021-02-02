@@ -16,8 +16,8 @@ import Swal from 'sweetalert2';
 })
 export class UsersComponent implements OnInit, OnDestroy {
   public totalUsers: number;
-  public users: User[] = [];
-  public usersTemp: User[] = [];
+  public users: Array<User>;
+  public usersTemp: Array<User>;
   public pagination: number = 0;
   public loading: boolean;
   public imgSubscription: Subscription;
@@ -67,9 +67,11 @@ export class UsersComponent implements OnInit, OnDestroy {
       return (this.users = this.usersTemp);
     }
 
-    this.searcherService.search('users', searchTerm).subscribe((res) => {
-      this.users = res;
-    });
+    this.searcherService
+      .search('users', searchTerm)
+      .subscribe((res: Array<User>) => {
+        this.users = res;
+      });
   }
 
   deleteUser(user: User) {
